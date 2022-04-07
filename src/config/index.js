@@ -1,6 +1,6 @@
-const environment = process.env.NODE_ENV || 'local';
+//const environment = process.env.NODE_ENV || 'local';
 //console.log("environment: ", environment);
-require("dotenv").config({ path: `./.enviroment/.${environment}.env`});
+//require("dotenv").config({ path: `./.enviroment/.${environment}.env`});
 
 const config ={
     "MONGO_URI": process.env.MONGO_URI,
