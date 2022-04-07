@@ -8,7 +8,46 @@ class QuestionnaireRepository extends BaseRepository {
     _questionnaire = Questionnaire;
   }
 
-  
+  async getQuestionnaireByid (questionnaireId){
+    const questionnaries = await _questionnaire.aggregate([
+      { $match: { "_id": Types.ObjectId(questionnaireId) } },
+      {
+        $lookup: {
+          from: 'questions',
+          pipeline: [{
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$questionnaire", Types.ObjectId(questionnaireId)] }
+                ]
+              }
+            }
+          }],
+          as: 'listQuestions'
+        }
+      },
+      {
+        $lookup: {
+          from: 'options',
+          let: { idUserPost: "$user" },
+          pipeline: [{
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$questionnaire", Types.ObjectId(questionnaireId)] }
+                ]
+              }
+            }
+          }],
+          as: 'listOptions'
+        }
+      }
+
+    ])
+
+    return questionnaries;
+  }
+ 
 
 }
 

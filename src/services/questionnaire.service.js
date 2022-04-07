@@ -13,20 +13,41 @@ class QuestionnaireService extends BaseService {
 
   async createQuestionnaire (data) {
     const quest = await _questionnaireRepository.create({name: data.name, user: data.userId});
+    await this.createOpQue(data,quest);
+    return quest;
+  }
 
+  async getQuestionnaireByid (questionnaireId) {
+    const quest = await _questionnaireRepository.getQuestionnaireByid(questionnaireId);
+    return quest
+  }
+
+  async updateQuestionnaire (questionnaireId, data){
+    const resul = await _questionnaireRepository.update(questionnaireId, {name: data.name, user: data.userId} );
+    await _optionRepository.deleteByQuest(questionnaireId);
+    await _questionRepository.deleteByQuest(questionnaireId);
+    await this.createOpQue(data,resul);
+    return resul;
+  }
+
+  async deleteQuestionnaire (questionnaireId, data){
+    const resul = await _questionnaireRepository.delete(questionnaireId);
+    await _optionRepository.deleteByQuest(questionnaireId);
+    await _questionRepository.deleteByQuest(questionnaireId);
+    return resul;
+
+  }
+
+  async createOpQue (data, quest) {
     for(const question of data.questions){
-        question['questionnaire'] = quest._id
-        await _questionRepository.create(question);
+      question['questionnaire'] = quest._id
+      await _questionRepository.create(question);
     }
     for(const option of data.options){
         option['questionnaire'] = quest._id
         await _optionRepository.create(option);
     }
-
-    return quest;
   }
-
-
 }
 
 module.exports = QuestionnaireService;

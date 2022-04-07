@@ -14,9 +14,8 @@ class QuestionnaireController {
 
   async getById(req, res) {
     const { questionnaireId } = req.params;
-    const type = req.query.hasOwnProperty('type')?req.query.type: '';
-    const questionnaire = await _questionnaireService.getQuestionnaireByid(questionnaireId, type);
-    return res.send(questionnaire);
+    const questionnaire = await _questionnaireService.getQuestionnaireByid(questionnaireId);
+    return res.send(questionnaire.length >0?questionnaire[0]:{});
   }
 
   async getAll(req, res) {
@@ -29,7 +28,6 @@ class QuestionnaireController {
   async updateQuestionnaire(req, res) {
     const { body } = req;
     const { questionnaireId } = req.params;
-
     const updatedQuestionnaire = await _questionnaireService.updateQuestionnaire(questionnaireId, body);
     return res.json(updatedQuestionnaire);
   }
@@ -43,7 +41,7 @@ class QuestionnaireController {
 
   async delete(req, res) {
     const { questionnaireId } = req.params;
-    const deletedQuestionnaire = await _questionnaireService.delete(questionnaireId);
+    const deletedQuestionnaire = await _questionnaireService.deleteQuestionnaire(questionnaireId);
     return res.send(deletedQuestionnaire);
   }
 

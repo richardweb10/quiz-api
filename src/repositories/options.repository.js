@@ -8,6 +8,17 @@ class OptionRepository extends BaseRepository {
     _option = Option;
   }
 
+  async deleteByQuest (idQuest){
+    try{
+      const res = await _option.deleteMany({questionnaire: Types.ObjectId(idQuest)});
+      
+      return res;
+    }catch(e){
+      console.log("e: ", e);
+    }
+    
+  }
+
   
 
 }

@@ -8,6 +8,17 @@ class QuestionRepository extends BaseRepository {
     _question = Question;
   }
 
+  async deleteByQuest (idQuest){
+    try{
+      const res = await _question.deleteMany({questionnaire: Types.ObjectId(idQuest)});
+      
+      return res;
+    }catch(e){
+      console.log("e: ", e);
+    }
+    
+  }
+
   
 
 }
