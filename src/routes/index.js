@@ -12,7 +12,8 @@ const passportRoutes = require("./passport.routes")
 
 module.exports = function ({
   UserRoutes,
-  AuthRoutes
+  AuthRoutes,
+  QuestionnaireRoutes
 }) {
   const router = express.Router();
   const apiRoutes = express.Router();
@@ -25,6 +26,7 @@ module.exports = function ({
   apiRoutes.use("/user", UserRoutes);
   apiRoutes.use("/register", AuthRoutes);
   apiRoutes.use("/auth", passportRoutes);
+  apiRoutes.use("/quest", QuestionnaireRoutes);
 
 
   router.use("/v1/api", apiRoutes);
